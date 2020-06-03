@@ -1,13 +1,13 @@
 class BinaryTree
 
-  attr_reader :numbers_stored, :sum, :min_number, :max_number
+  attr_reader :numbers_stored, :sum, :min, :max
 
   def initialize
     @tree           = Node.new
     @numbers_stored = 0
     @sum            = 0
-    @min_number     = nil
-    @max_number     = nil
+    @min            = nil
+    @max            = nil
   end
 
 
@@ -15,17 +15,22 @@ class BinaryTree
     add_node(@tree, num)
     @numbers_stored += 1
     @sum            += num
-    @min_number      = @min_number.nil? ? num : [@min_number, num].min
-    @max_number      = @max_number.nil? ? num : [@max_number, num].max
+    @min             = @min.nil? ? num : [@min, num].min
+    @max             = @max.nil? ? num : [@max, num].max
   end
 
-  def show_in_order(node = @tree, result = [])
 
-    show_in_order(node.left, result) if !node.left.nil?
-    node.counter.times { result << node.value }
-    show_in_order(node.right, result) if !node.right.nil?
-    
-    result
+  def show_in_order(node = @tree, result = Array.new(@numbers_stored), i = 0)
+
+    arr = node.left ? show_in_order(node.left, result, i) : [result, i]
+
+    node.counter.times do 
+      arr[0][arr[1]] = node.value; arr[1] += 1
+    end
+
+    arr = show_in_order(node.right, arr[0], arr[1]) if node.right
+
+    arr
 
   end
 
@@ -63,6 +68,6 @@ end
 
 bst = BinaryTree.new
 
-100.times { bst.store_number(rand(100)) }
+1_000_000.times { bst.store_number(rand(1_000)) }
 
-p bst.show_in_order
+bst.show_in_order
