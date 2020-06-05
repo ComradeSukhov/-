@@ -10,7 +10,6 @@ class BinaryTree
     @max            = nil
   end
 
-
   def store_number(num)
     add_node(@tree, num)
     @numbers_stored += 1
@@ -19,32 +18,39 @@ class BinaryTree
     @max             = @max.nil? ? num : [@max, num].max
   end
 
-
   def show_in_order
     result = Array.new(@numbers_stored)
     in_order_traversal(@tree, result, 0)
     result
   end
 
+  def clear
+    remove_descendants(@tree)
 
-  def in_order_traversal(node, result, i)
-
-    i = in_order_traversal(node.left, result, i) if node.left
-
-    node.counter.times { result[i] = node.value; i += 1 }
-
-    i = in_order_traversal(node.right, result, i) if node.right
-
-    i
-
+    @tree           = Node.new
+    @numbers_stored = 0
+    @sum            = 0
+    @min            = nil
+    @max            = nil
   end
+
+  def copy
+    clone = BinaryTree.new
+    root_to_leaves(@tree, clone)
+    clone
+  end
+
+  def contains?(num)
+    search_node(@tree, num)
+  end
+
 
   private
 
 
   def add_node(node, num)
-    if node.value == nil
-      node.value    = num
+    if node.value  == nil
+      node.value   = num
       node.counter += 1
     else
       case num <=> node.value
@@ -58,6 +64,40 @@ class BinaryTree
     end
   end
 
+  def in_order_traversal(node, result, i)
+
+    i = in_order_traversal(node.left, result, i) if node.left
+    node.counter.times { result[i] = node.value; i += 1 }
+    i = in_order_traversal(node.right, result, i) if node.right
+
+    i
+
+  end
+
+  def remove_descendants(node)
+    remove_descendants(node.left)  if node.left
+    remove_descendants(node.right) if node.right
+    node.left  = nil
+    node.right = nil
+  end
+
+  def search_node(node, number)
+    case number <=> node.value
+    when -1
+      return search_node(node.left, number) if node.left
+    when 0
+      return true
+    when 1
+      return search_node(node.right, number) if node.right
+    end
+    false
+  end
+
+  def root_to_leaves(node, clone)
+    node.counter.times { clone.store_number(node.value) }
+    root_to_leaves(node.left, clone)  if node.left
+    root_to_leaves(node.right, clone) if node.right
+  end
 
   class Node
     attr_accessor :value, :left, :right, :counter
@@ -72,15 +112,3 @@ class BinaryTree
 end
 
 bst = BinaryTree.new
-
-
-1_000.times { bst.store_number(rand(100)) }
-
-
-# x = [2, 3, 5]
-# for f in x
-#   bst.store_number(f)
-# end
-
-
-p bst.show_in_order
