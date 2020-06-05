@@ -20,17 +20,22 @@ class BinaryTree
   end
 
 
-  def show_in_order(node = @tree, result = Array.new(@numbers_stored), i = 0)
+  def show_in_order
+    result = Array.new(@numbers_stored)
+    in_order_traversal(@tree, result, 0)
+    result
+  end
 
-    arr = node.left ? show_in_order(node.left, result, i) : [result, i]
 
-    node.counter.times do 
-      arr[0][arr[1]] = node.value; arr[1] += 1
-    end
+  def in_order_traversal(node, result, i)
 
-    arr = show_in_order(node.right, arr[0], arr[1]) if node.right
+    i = in_order_traversal(node.left, result, i) if node.left
 
-    arr
+    node.counter.times { result[i] = node.value; i += 1 }
+
+    i = in_order_traversal(node.right, result, i) if node.right
+
+    i
 
   end
 
@@ -68,6 +73,14 @@ end
 
 bst = BinaryTree.new
 
-1_000_000.times { bst.store_number(rand(1_000)) }
 
-bst.show_in_order
+1_000.times { bst.store_number(rand(100)) }
+
+
+# x = [2, 3, 5]
+# for f in x
+#   bst.store_number(f)
+# end
+
+
+p bst.show_in_order
