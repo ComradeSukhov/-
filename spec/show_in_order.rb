@@ -1,9 +1,9 @@
 require 'rspec'
-require_relative '../BST'
+require_relative '../BinaryTreeUnique'
 
 describe 'show_in_order' do
   before(:each) do
-    @bst = BinaryTree.new
+    @bst = BinaryTreeUnique.new
   end
 
   it 'should pass simple tests' do

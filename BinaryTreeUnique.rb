@@ -1,4 +1,4 @@
-class BinaryTree
+class BinaryTreeUnique
 
   attr_reader :numbers_stored, :sum, :min, :max
 
@@ -35,7 +35,7 @@ class BinaryTree
   end
 
   def copy
-    clone = BinaryTree.new
+    clone = BinaryTreeUnique.new
     root_to_leaves(@tree, clone)
     clone
   end
@@ -110,5 +110,3 @@ class BinaryTree
   end
 
 end
-
-bst = BinaryTree.new
