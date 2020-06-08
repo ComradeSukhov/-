@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../BinaryTreeUnique'
+require_relative '../Binary_Tree_Unique'
 
 describe 'show_in_order' do
   before(:each) do

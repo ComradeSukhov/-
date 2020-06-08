@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../BinaryTreeUnique'
+require_relative '../Binary_Tree_Unique'
 
 describe 'copy' do
 
